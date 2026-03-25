@@ -8,6 +8,8 @@
 //   All logic must remain in this single file.
 // ============================================================
 
+//Zeynep Eylül Çelen  2599729
+
 #include <iostream>
 #include <string>
 #include <stdexcept>
@@ -34,19 +36,22 @@ public:
     // Throw std::invalid_argument if value < -273.15
     explicit Temperature(double celsius) {
         // TODO: Validate and set celsius_
+        if (celsius < -273.15)
+            throw std::invalid_argument("Invalid temperature");
+        celsius_ = celsius;
     }
 
     // Getter: return the temperature in Celsius
     double getCelsius() const {
         // TODO: Implement
-        return 0.0;
+        return celsius_;
     }
 
     // Getter: return the temperature converted to Fahrenheit
     // Formula: F = C * 9/5 + 32
     double getFahrenheit() const {
         // TODO: Implement
-        return 0.0;
+        return celsius_ * 9/5 + 32;
     }
 
     // Setter: update the temperature in Celsius
@@ -54,6 +59,10 @@ public:
     // Throw std::invalid_argument if value < -273.15
     void setCelsius(double celsius) {
         // TODO: Implement
+        celsius = celsius_;
+        if (celsius < -273.15)
+            throw std::invalid_argument("Invalid temperature");
+        
     }
 };
 
@@ -74,24 +83,38 @@ public:
     // Throw std::invalid_argument if owner is empty or balance < 0
     BankAccount(const string& owner, double initialBalance) {
         // TODO: Validate and set members
+        explicit BankAccount(int balance) {
+        if (balance < 0)
+            throw std::invalid_argument("Invalid balance");
+        balance_ = balance;,
+
+        explicit BankAccount(string owner) {
+        if (owner.length() == 0)
+            throw std::invalid_argument("Invalid owner name");
+        owner_ = owner;
+    }
+    }
     }
 
     // Getter: return the owner's name
     string getOwner() const {
         // TODO: Implement
-        return "";
+        return owner_;
     }
 
     // Getter: return the current balance
     double getBalance() const {
         // TODO: Implement
-        return 0.0;
+        return balance_;
     }
 
     // Deposit money into the account.
     // Throw std::invalid_argument if amount <= 0
     void deposit(double amount) {
         // TODO: Implement
+        if(amount <= 0)
+            throw std::invalid_argument("Invalid amount");
+        balance_ += amount;
     }
 
     // Withdraw money from the account.
@@ -99,6 +122,12 @@ public:
     // Throw std::runtime_error if insufficient funds
     void withdraw(double amount) {
         // TODO: Implement
+        if(amount <= 0)
+            throw std::invalid_argument("Invalid amount");
+        if(amount > balance_)
+            throw std::runtime_error("Insufficient funds");
+            balance_ -= amount;
+        
     }
 
     // Transfer money from this account to another.
@@ -106,6 +135,13 @@ public:
     // Throw std::runtime_error if insufficient funds
     void transfer(BankAccount& other, double amount) {
         // TODO: Implement using withdraw() and deposit()
+        if(amount <= 0)
+            throw std::invalid_argument("Invalid amount");
+        if(amount > balance_)
+            throw std::runtime_error;
+            balance_ -= amount;
+        withdraw(amount);
+        deposit(amount);
     }
 };
 
@@ -130,6 +166,13 @@ private:
     static void validate(const string& pwd) {
         // TODO: Check length >= 8 and hasDigit
         // Throw std::invalid_argument with descriptive message if invalid
+        explicit Password(string password) {
+        if (password < 8)
+            throw std::invalid_argument("Password must have 8 or more characters");
+        if(hasDigit(password))
+            throw std::invalid_argument("Password must contain at least 1 digit");
+        
+    }
     }
 
 public:
@@ -137,6 +180,8 @@ public:
     // Must pass validation.
     explicit Password(const string& pwd) {
         // TODO: Validate and set password_
+        validate(password);
+        password_ = password;
     }
 
     // Change password: old password must match, new must be valid.
@@ -144,6 +189,11 @@ public:
     // Throw std::invalid_argument if newPassword fails validation
     void change(const string& oldPassword, const string& newPassword) {
         // TODO: Implement
+        if(oldPassword != password_)
+            throw std::invalid_argument("Old password does not match");
+        if(valide(newPassword))
+            throw std::invalid_argument("New password is not valid");
+        password_ = newPassword;
     }
 
     // Check if a given string matches the stored password.
@@ -155,7 +205,7 @@ public:
     // Return the length of the password (safe to expose)
     size_t getLength() const {
         // TODO: Implement
-        return 0;
+        return password_.length();
     }
 
     // NOTE: There is deliberately NO getPassword() method.
