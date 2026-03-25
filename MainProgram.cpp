@@ -36,8 +36,9 @@ public:
     // Throw std::invalid_argument if value < -273.15
     explicit Temperature(double celsius) {
         // TODO: Validate and set celsius_
-        if (celsius < -273.15)
+        if (celsius < -273.15){
             throw std::invalid_argument("Invalid temperature");
+        }
         celsius_ = celsius;
     }
 
@@ -60,8 +61,9 @@ public:
     void setCelsius(double celsius) {
         // TODO: Implement
         celsius = celsius_;
-        if (celsius < -273.15)
+        if (celsius < -273.15){
             throw std::invalid_argument("Invalid temperature");
+        }
         
     }
 };
@@ -84,13 +86,15 @@ public:
     BankAccount(const string& owner, double initialBalance) {
         // TODO: Validate and set members
         explicit BankAccount(int balance) {
-        if (balance < 0)
+        if (balance < 0){
             throw std::invalid_argument("Invalid balance");
+        }
         balance_ = balance;,
 
         explicit BankAccount(string owner) {
-        if (owner.length() == 0)
+        if (owner.length() == 0){
             throw std::invalid_argument("Invalid owner name");
+        }
         owner_ = owner;
     }
     }
@@ -112,8 +116,9 @@ public:
     // Throw std::invalid_argument if amount <= 0
     void deposit(double amount) {
         // TODO: Implement
-        if(amount <= 0)
+        if(amount <= 0){
             throw std::invalid_argument("Invalid amount");
+        }
         balance_ += amount;
     }
 
@@ -122,10 +127,12 @@ public:
     // Throw std::runtime_error if insufficient funds
     void withdraw(double amount) {
         // TODO: Implement
-        if(amount <= 0)
+        if(amount <= 0){
             throw std::invalid_argument("Invalid amount");
-        if(amount > balance_)
+        }
+        if(amount > balance_){
             throw std::runtime_error("Insufficient funds");
+        }
             balance_ -= amount;
         
     }
@@ -135,10 +142,12 @@ public:
     // Throw std::runtime_error if insufficient funds
     void transfer(BankAccount& other, double amount) {
         // TODO: Implement using withdraw() and deposit()
-        if(amount <= 0)
+        if(amount <= 0){
             throw std::invalid_argument("Invalid amount");
-        if(amount > balance_)
+        }
+        if(amount > balance_){
             throw std::runtime_error;
+        }
             balance_ -= amount;
         withdraw(amount);
         deposit(amount);
@@ -167,10 +176,12 @@ private:
         // TODO: Check length >= 8 and hasDigit
         // Throw std::invalid_argument with descriptive message if invalid
         explicit Password(string password) {
-        if (password < 8)
+        if (password < 8){
             throw std::invalid_argument("Password must have 8 or more characters");
-        if(hasDigit(password))
+        }
+        if(hasDigit(password)){
             throw std::invalid_argument("Password must contain at least 1 digit");
+        }
         
     }
     }
@@ -189,10 +200,12 @@ public:
     // Throw std::invalid_argument if newPassword fails validation
     void change(const string& oldPassword, const string& newPassword) {
         // TODO: Implement
-        if(oldPassword != password_)
+        if(oldPassword != password_){
             throw std::invalid_argument("Old password does not match");
-        if(valide(newPassword))
+        }
+        if(valide(newPassword)){
             throw std::invalid_argument("New password is not valid");
+        }
         password_ = newPassword;
     }
 
