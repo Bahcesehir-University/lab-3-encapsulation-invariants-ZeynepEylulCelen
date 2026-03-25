@@ -93,7 +93,7 @@ public:
             throw std::invalid_argument("Owner can not be empty");
         }
         owner_ = owner;
-        balance_ = initialBalance;,
+        balance_ = initialBalance;
     }
 
     // Getter: return the owner's name
@@ -177,7 +177,6 @@ private:
             throw std::invalid_argument("Password must contain at least 1 digit");
         }
         
-    }
     }
 
 public:
