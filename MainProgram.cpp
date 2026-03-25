@@ -52,7 +52,7 @@ public:
     // Formula: F = C * 9/5 + 32
     double getFahrenheit() const {
         // TODO: Implement
-        return celsius_ * 9/5 + 32;
+        return celsius_ * 9.0/5.0 + 32.0;
     }
 
     // Setter: update the temperature in Celsius
@@ -60,10 +60,11 @@ public:
     // Throw std::invalid_argument if value < -273.15
     void setCelsius(double celsius) {
         // TODO: Implement
-        celsius = celsius_;
         if (celsius < -273.15){
             throw std::invalid_argument("Invalid temperature");
         }
+        celsius_ = celsius;
+
         
     }
 };
@@ -85,19 +86,14 @@ public:
     // Throw std::invalid_argument if owner is empty or balance < 0
     BankAccount(const string& owner, double initialBalance) {
         // TODO: Validate and set members
-        explicit BankAccount(int balance) {
-        if (balance < 0){
-            throw std::invalid_argument("Invalid balance");
+        if (initialBalance < 0){
+            throw std::invalid_argument("Balance can not be negative");
         }
-        balance_ = balance;,
-
-        explicit BankAccount(string owner) {
-        if (owner.length() == 0){
-            throw std::invalid_argument("Invalid owner name");
+        if (owner.empty()){
+            throw std::invalid_argument("Owner can not be empty");
         }
         owner_ = owner;
-    }
-    }
+        balance_ = initialBalance;,
     }
 
     // Getter: return the owner's name
@@ -117,7 +113,7 @@ public:
     void deposit(double amount) {
         // TODO: Implement
         if(amount <= 0){
-            throw std::invalid_argument("Invalid amount");
+            throw std::invalid_argument("Deposit must be positive");
         }
         balance_ += amount;
     }
@@ -128,7 +124,7 @@ public:
     void withdraw(double amount) {
         // TODO: Implement
         if(amount <= 0){
-            throw std::invalid_argument("Invalid amount");
+            throw std::invalid_argument("Withdrawal amount must be positive");
         }
         if(amount > balance_){
             throw std::runtime_error("Insufficient funds");
@@ -143,14 +139,10 @@ public:
     void transfer(BankAccount& other, double amount) {
         // TODO: Implement using withdraw() and deposit()
         if(amount <= 0){
-            throw std::invalid_argument("Invalid amount");
+            throw std::invalid_argument("Transfer amount must be positive");
         }
-        if(amount > balance_){
-            throw std::runtime_error;
-        }
-            balance_ -= amount;
         withdraw(amount);
-        deposit(amount);
+        other.deposit(amount);
     }
 };
 
@@ -168,6 +160,9 @@ private:
     // Helper: check if a string contains at least one digit
     static bool hasDigit(const string& s) {
         // TODO: Implement
+        for(char c : s){
+            if(isdigit(c)) return true;
+        }
         return false;
     }
 
@@ -175,11 +170,10 @@ private:
     static void validate(const string& pwd) {
         // TODO: Check length >= 8 and hasDigit
         // Throw std::invalid_argument with descriptive message if invalid
-        explicit Password(string password) {
-        if (password < 8){
+        if (pwd.length() < 8){
             throw std::invalid_argument("Password must have 8 or more characters");
         }
-        if(hasDigit(password)){
+        if(!hasDigit(pwd)){
             throw std::invalid_argument("Password must contain at least 1 digit");
         }
         
@@ -191,8 +185,8 @@ public:
     // Must pass validation.
     explicit Password(const string& pwd) {
         // TODO: Validate and set password_
-        validate(password);
-        password_ = password;
+        validate(pwd);
+        password_ = pwd;
     }
 
     // Change password: old password must match, new must be valid.
@@ -203,16 +197,14 @@ public:
         if(oldPassword != password_){
             throw std::invalid_argument("Old password does not match");
         }
-        if(valide(newPassword)){
-            throw std::invalid_argument("New password is not valid");
-        }
+        validate(newPassword);        
         password_ = newPassword;
     }
 
     // Check if a given string matches the stored password.
     bool matches(const string& attempt) const {
         // TODO: Implement
-        return false;
+        return attempt == password_;
     }
 
     // Return the length of the password (safe to expose)
